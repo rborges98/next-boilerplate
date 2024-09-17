@@ -49,7 +49,7 @@ const sendEmail = async (email: string, emailContent: string) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer mlsn.551ec1615a3ead6d229372bf5616110ef54ff9eb854a456e17ec04acb8aa77b7`
+      Authorization: `Bearer mlsn.dec9c620d746aae66a807bbf66a9559c57acc86ebe8bddde0967ee073714e980`
     },
     body: JSON.stringify({
       from: {
