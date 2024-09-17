@@ -15,7 +15,9 @@ export async function middleware(request: NextRequest) {
         accessToken?.value as string
       )
 
-      return isValid && isLoginPath ? NextResponse.redirect(new URL('/', request.url)) : NextResponse.next()
+      return isValid && isLoginPath
+        ? NextResponse.redirect(new URL('/', request.url))
+        : NextResponse.next()
     }
 
     if (refreshToken) {
@@ -31,7 +33,9 @@ export async function middleware(request: NextRequest) {
           refreshTokenContent.user
         )
 
-        const response = isLoginPath ? NextResponse.redirect(new URL('/', request.url)): NextResponse.next()
+        const response = isLoginPath
+          ? NextResponse.redirect(new URL('/', request.url))
+          : NextResponse.next()
 
         const cookieOptions = {
           accessToken: newAccessToken,
@@ -54,7 +58,9 @@ export async function middleware(request: NextRequest) {
     console.log(error)
   }
 
-  return isLoginPath ? NextResponse.next() : NextResponse.redirect(new URL('/login', request.url))
+  return isLoginPath
+    ? NextResponse.next()
+    : NextResponse.redirect(new URL('/login', request.url))
 }
 
 export const config = {
