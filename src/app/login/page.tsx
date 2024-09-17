@@ -24,7 +24,7 @@ export default function Page() {
         content: sendEmail?.message
       })
 
-      if (!sendEmail.error) {
+      if (!sendEmail?.error) {
         const encryptedEmail = await encrypt(email)
 
         const verifyUrl = '/verify/' + encryptedEmail
