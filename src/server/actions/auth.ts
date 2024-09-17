@@ -2,7 +2,6 @@
 
 import connectToDatabase from '@/server/db'
 import { generateVerificationCode } from '@/shared/helpers'
-import nodemailer from 'nodemailer'
 import verificationCode from '../db/models/verificationCode'
 import { redirect } from 'next/navigation'
 import token from '@/services/jwt'
@@ -35,6 +34,7 @@ export const sendVerificationCode = async (
       JSON.stringify({ message: 'E-mail enviado com sucesso!' })
     )
   } catch (error) {
+    console.log(error)
     return JSON.parse(
       JSON.stringify({
         error: error,
@@ -44,30 +44,32 @@ export const sendVerificationCode = async (
   }
 }
 
-const sendEmail = (email: string, emailContent: string) => {
-  var transport = nodemailer.createTransport({
-    host: 'smtp.mailersend.net',
-    port: 587,
-    auth: {
-      user: 'MS_zHhZXA@trial-o65qngkqvxjgwr12.mlsender.net', //TODO: adicionar em constantes
-      pass: 'RqYfJnkunxd8d4a4'
-    }
+const sendEmail = async (email: string, emailContent: string) => {
+  const response = await fetch('https://api.mailersend.com/v1/email', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer mlsn.551ec1615a3ead6d229372bf5616110ef54ff9eb854a456e17ec04acb8aa77b7`
+    },
+    body: JSON.stringify({
+      from: {
+        email: 'MS_zHhZXA@trial-o65qngkqvxjgwr12.mlsender.net',
+        name: 'Your Name'
+      },
+      to: [
+        {
+          email: email,
+          name: 'Recipient Name'
+        }
+      ],
+      subject: 'seu codigo',
+      text: emailContent
+    })
   })
 
-  const mailOptions = {
-    from: 'noreply@trial-o65qngkqvxjgwr12.mlsender.net',
-    to: email,
-    subject: 'Teste de e-mail com Mailtrap', //TODO: adicionar o subject numa variavel
-    text: emailContent
+  if (!response.ok) {
+    throw new Error(`Error sending email: ${response.statusText}`)
   }
-
-  transport.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return console.log('Erro ao enviar o e-mail:', error)
-    }
-
-    console.log('E-mail enviado:', info.response)
-  })
 }
 
 export const verifyCode = async (
