@@ -37,18 +37,9 @@ export async function middleware(request: NextRequest) {
           ? NextResponse.redirect(new URL('/', request.url))
           : NextResponse.next()
 
-        const cookieOptions = {
-          accessToken: newAccessToken,
-          Path: '/',
-          HttpOnly: 'Secure',
-          'Max-Age': 15 * 60,
-          SameSite: 'Lax'
-        }
-
         response.headers.set(
           'Set-Cookie',
-          JSON.stringify(cookieOptions)
-          // `accessToken=${newAccessToken}; Path=/; HttpOnly; Secure; Max-Age=${15 * 60}; SameSite=Lax`
+          `accessToken=${newAccessToken}; Path=/; HttpOnly; Secure; Max-Age=${15 * 60}; SameSite=Lax`
         )
 
         return response
