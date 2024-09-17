@@ -20,8 +20,8 @@ export default function Page() {
       const sendEmail = await sendVerificationCode(email)
 
       setMessage({
-        error: Boolean(sendEmail.error),
-        content: sendEmail.message
+        error: Boolean(sendEmail?.error),
+        content: sendEmail?.message
       })
 
       if (!sendEmail.error) {
