@@ -24,12 +24,12 @@ export default function Page() {
         content: sendEmail?.message
       })
 
-      if (!sendEmail?.error) {
-        const encryptedEmail = await encrypt(email)
+      if (sendEmail?.error) return
 
-        const verifyUrl = '/verify/' + encryptedEmail
-        route.push(verifyUrl)
-      }
+      const encryptedEmail = await encrypt(email)
+
+      const verifyUrl = '/verify/' + encryptedEmail
+      route.push(verifyUrl)
     } catch (error) {
       console.log(error)
     }
